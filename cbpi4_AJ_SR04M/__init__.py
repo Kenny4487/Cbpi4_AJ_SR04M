@@ -10,8 +10,8 @@ from cbpi.api.config import ConfigType
 glogger = logging.getLogger(__name__)
 
 @parameters([
-    Property.Select(label="Ultrasonic Trig Pin", options=[{"label": str(i), "value": i} for i in range(28)], description="Trigger Pin"),
-    Property.Select(label="Ultrasonic Echo Pin", options=[{"label": str(i), "value": i} for i in range(28)], description="Echo Pin"),
+    Property.Select(label="Ultrasonic Trig Pin", options=[0, 1, 2, 3, 4, 5, 6, 7, 8, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27], description="Trigger Pin"),
+    Property.Select(label="Ultrasonic Echo Pin", options=[0, 1, 2, 3, 4, 5, 6, 7, 8, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27], description="Echo Pin"),
     Property.Number(label="Pot Diameter", configurable=True, description="Pot Diameter in cm"),
     Property.Number(label="Mounting Height", configurable=True, description="Mounting Height in cm"),
     Property.Select(label="Interval", options=[1, 2, 5, 10, 30, 60], description="Measurement Interval in Seconds")
