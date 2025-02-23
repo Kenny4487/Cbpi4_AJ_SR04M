@@ -1,2 +1,2 @@
-include {{ name }}/config.yaml
-recursive-include {{ name }}/static *
+include cbpi4_AJ_SR04M/config.yaml
+recursive-include cbpi4_AJ_SR04M/static *
