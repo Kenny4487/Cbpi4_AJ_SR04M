@@ -13,24 +13,7 @@ glogger = logging.getLogger(__name__)
     Property.Select(label="Ultrasonic Trig Pin", options=[{"label": str(i), "value": i} for i in range(28)], description="Trigger Pin"),
     Property.Select(label="Ultrasonic Echo Pin", options=[{"label": str(i), "value": i} for i in range(28)], description="Echo Pin"),
     Property.Number(label="Pot Diameter", configurable=True, description="Pot Diameter in cm"),
-    Property.Number(label="Mounting Height", configurable=True, description="Mounting Height in cm")
-])
-class AJ_SR04MConfig(CBPiExtension):
-    def __init__(self, cbpi):
-        self.cbpi = cbpi
-        self._task = asyncio.create_task(self.init_sensor())
-
-    async def init_sensor(self):
-        self.trig_pin = self.cbpi.config.get("Ultrasonic_Trig", 23)
-        self.echo_pin = self.cbpi.config.get("Ultrasonic_Echo", 24)
-        self.pot_diameter = self.cbpi.config.get("Pot_Diameter", 30)
-        self.mounting_height = self.cbpi.config.get("Mounting_Height", 50)
-        
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.trig_pin, GPIO.OUT)
-        GPIO.setup(self.echo_pin, GPIO.IN)
-
-@parameters([
+    Property.Number(label="Mounting Height", configurable=True, description="Mounting Height in cm"),
     Property.Select(label="Interval", options=[1, 2, 5, 10, 30, 60], description="Measurement Interval in Seconds")
 ])
 class AJ_SR04M(CBPiSensor):
@@ -38,10 +21,14 @@ class AJ_SR04M(CBPiSensor):
         super(AJ_SR04M, self).__init__(cbpi, id, props)
         self.value = 0
         self.interval = int(self.props.get("Interval", 2))
-        self.trig_pin = self.cbpi.config.get("Ultrasonic_Trig", 23)
-        self.echo_pin = self.cbpi.config.get("Ultrasonic_Echo", 24)
-        self.pot_diameter = self.cbpi.config.get("Pot_Diameter", 30)
-        self.mounting_height = self.cbpi.config.get("Mounting_Height", 50)
+        self.trig_pin = int(self.props.get("Ultrasonic Trig Pin", 23))
+        self.echo_pin = int(self.props.get("Ultrasonic Echo Pin", 24))
+        self.pot_diameter = float(self.props.get("Pot Diameter", 30))
+        self.mounting_height = float(self.props.get("Mounting Height", 50))
+        
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.trig_pin, GPIO.OUT)
+        GPIO.setup(self.echo_pin, GPIO.IN)
         
     async def run(self):
         while self.running:
@@ -84,5 +71,4 @@ class AJ_SR04M(CBPiSensor):
         return dict(value=self.value)
 
 def setup(cbpi):
-    cbpi.plugin.register("UltrasonicSensorConfig", AJ_SR04MConfig)
     cbpi.plugin.register("AJ-SR04M Distance Sensor", AJ_SR04M)
