@@ -46,9 +46,12 @@ class AJ_SR04M(CBPiSensor):
             
             start_time, stop_time = None, None
             
-            while GPIO.input(self.echo_pin) == 0:
+            timeout = time.perf_counter() + 0.02  # 20ms timeout
+            while GPIO.input(self.echo_pin) == 0 and time.perf_counter() < timeout:
                 start_time = time.perf_counter()
-            while GPIO.input(self.echo_pin) == 1:
+            
+            timeout = time.perf_counter() + 0.02  # 20ms timeout
+            while GPIO.input(self.echo_pin) == 1 and time.perf_counter() < timeout:
                 stop_time = time.perf_counter()
             
             if start_time and stop_time:
