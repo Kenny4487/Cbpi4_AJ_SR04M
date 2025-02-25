@@ -5,6 +5,7 @@ Craftbeerpi Sensors for using SR04 ultrasonic sensor modules. It should work wit
 The Plugin comes with two sensors:
 - SR04M distance
 - SR04M volume
+
 The distance sensor just returns the measured distance (in cm).
 The volume sensor has "pot diameter" and "mounting height" as parameters to calculate the filled volume (in liters).
 
